@@ -1,3 +1,5 @@
+#![no_std]
+
 use embedded_graphics::drawable::{Drawable};
 use embedded_graphics::DrawTarget;
 use embedded_graphics::geometry::Point;
@@ -5,17 +7,16 @@ use embedded_graphics::pixelcolor::{PixelColor};
 use embedded_graphics::primitives::{Line, Primitive};
 use embedded_graphics::style::PrimitiveStyle;
 
-
-pub struct Plot<C>
+pub struct Plot<'a, C>
 {
-    data: Vec<Point>,
+    data: &'a [Point],
     color: C,
 }
 
-impl<C> Plot<C>
+impl<'a, C> Plot<'a, C>
     where C: PixelColor
 {
-    pub fn new(data: Vec<Point>,color : C) -> Plot<C> {
+    pub fn new(data: &'a [Point],color : C) -> Plot<C> {
         Plot {
             data,
             color,
@@ -23,7 +24,7 @@ impl<C> Plot<C>
     }
 }
 
-impl<C> Drawable<C> for Plot<C>
+impl<'a, C> Drawable<C> for Plot<'a, C>
     where C: PixelColor
 {
     fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), <D as DrawTarget<C>>::Error> {
