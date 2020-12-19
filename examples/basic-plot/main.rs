@@ -2,19 +2,26 @@ use embedded_graphics::{
     pixelcolor::Rgb565,
     prelude::*,
 };
-use embedded_graphics_simulator::{SimulatorDisplay, Window, OutputSettingsBuilder};
 
-use embedded_plots::Plot;
+use embedded_graphics_simulator::{
+    SimulatorDisplay,
+    Window,
+    OutputSettingsBuilder
+};
+
+use embedded_plots::curve::{PlotPoint, CurvePoints};
 
 fn main() -> Result<(), core::convert::Infallible> {
     let mut display: SimulatorDisplay<Rgb565> = SimulatorDisplay::new(Size::new(480, 272));
 
     let data = vec![
-        Point::new(100, 100),
-        Point::new(150, 100),
-        Point::new(200, 200)];
-    Plot::new(data.as_slice()
-        ,RgbColor::GREEN)
+        PlotPoint{x: 0,y: 0},
+        PlotPoint{x: 1,y: 1},
+        PlotPoint{x: 2,y: 1},
+        PlotPoint{x: 3,y: 0},
+    ];
+    CurvePoints::new(data.as_slice())
+        .into_drawable_curve(&(0..3),&(0..1),&Point{x: 20, y: 20}, &Point{x:450,y:250},RgbColor::WHITE)
         .draw(&mut display)?;
 
     let output_settings = OutputSettingsBuilder::new()
