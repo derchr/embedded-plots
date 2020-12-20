@@ -1,4 +1,4 @@
-use embedded_graphics::drawable::{Drawable, Pixel};
+use embedded_graphics::drawable::{Drawable};
 use embedded_graphics::DrawTarget;
 use embedded_graphics::geometry::Point;
 use embedded_graphics::pixelcolor::{PixelColor};
@@ -13,7 +13,7 @@ pub struct DrawableCurve<C, I>
     color: C,
 }
 
-impl<'a, C,I> DrawableCurve<C,I>
+impl<C,I> DrawableCurve<C,I>
     where
         C: PixelColor,
         I: Iterator<Item=Point>,
@@ -25,7 +25,7 @@ impl<'a, C,I> DrawableCurve<C,I>
         }
     }
 }
-impl<'a, C,I> Drawable<C> for DrawableCurve<C,I>
+impl<C,I> Drawable<C> for DrawableCurve<C,I>
     where C: PixelColor,
           I: Iterator<Item=Point>,
 {
@@ -34,7 +34,9 @@ impl<'a, C,I> Drawable<C> for DrawableCurve<C,I>
         let mut iter = self.scaled_data.into_iter();
         let mut prev = iter.next().unwrap();
         for point in iter {
-            Line::new(prev,point).into_styled(style).draw(display)?;
+            Line::new(prev,point)
+                .into_styled(style)
+                .draw(display)?;
             prev = point;
         }
         Ok(())
