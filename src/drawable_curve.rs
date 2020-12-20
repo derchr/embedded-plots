@@ -13,28 +13,29 @@ pub struct DrawableCurve<C, I>
     color: C,
 }
 
-impl<C,I> DrawableCurve<C,I>
+impl<C, I> DrawableCurve<C, I>
     where
         C: PixelColor,
         I: Iterator<Item=Point>,
 {
-    pub fn new(data: I,color : C) -> DrawableCurve<C,I> {
+    pub fn new(data: I, color: C) -> DrawableCurve<C, I> {
         DrawableCurve {
             scaled_data: data,
             color,
         }
     }
 }
-impl<C,I> Drawable<C> for DrawableCurve<C,I>
+
+impl<C, I> Drawable<C> for DrawableCurve<C, I>
     where C: PixelColor,
           I: Iterator<Item=Point>,
 {
-    fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), <D as DrawTarget<C>>::Error> {
-        let style = PrimitiveStyle::with_stroke(self.color,2);
+    fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), D::Error> {
+        let style = PrimitiveStyle::with_stroke(self.color, 2);
         let mut iter = self.scaled_data.into_iter();
         let mut prev = iter.next().unwrap();
         for point in iter {
-            Line::new(prev,point)
+            Line::new(prev, point)
                 .into_styled(style)
                 .draw(display)?;
             prev = point;
