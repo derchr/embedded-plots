@@ -9,7 +9,7 @@ use embedded_graphics_simulator::{
     OutputSettingsBuilder
 };
 
-use embedded_plots::curve::{PlotPoint, CurvePoints};
+use embedded_plots::curve::{PlotPoint, Curve};
 
 fn main() -> Result<(), core::convert::Infallible> {
     let mut display: SimulatorDisplay<Rgb565> = SimulatorDisplay::new(Size::new(480, 272));
@@ -20,7 +20,7 @@ fn main() -> Result<(), core::convert::Infallible> {
         PlotPoint{x: 2,y: 1},
         PlotPoint{x: 3,y: 0},
     ];
-    CurvePoints::new(data.as_slice())
+    Curve::new(data.as_slice())
         .into_drawable_curve(&(0..3),&(0..1),&Point{x: 20, y: 20}, &Point{x:450,y:250},RgbColor::WHITE)
         .draw(&mut display)?;
 

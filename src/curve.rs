@@ -9,16 +9,22 @@ pub struct PlotPoint {
     pub y: i32,
 }
 
-pub struct CurvePoints<'a>{
+pub struct Curve<'a>{
     points: &'a [PlotPoint],
 }
 
-impl<'a> CurvePoints<'a> {
-    pub fn new(points: &'a [PlotPoint]) -> CurvePoints {
-        CurvePoints{points}
+impl<'a> Curve<'a> {
+    pub fn new(points: &'a [PlotPoint]) -> Curve {
+        Curve {points}
     }
 
-    pub fn into_drawable_curve<C>(self, x_range: &'a Range<i32>, y_range: &'a Range<i32>, top_left : &'a Point, bottom_right: &'a Point, color: C) -> DrawableCurve<C,impl Iterator<Item=Point> + 'a>
+    pub fn into_drawable_curve<C>(self,
+                                  x_range: &'a Range<i32>,
+                                  y_range: &'a Range<i32>,
+                                  top_left : &'a Point,
+                                  bottom_right: &'a Point,
+                                  color: C
+    ) -> DrawableCurve<C,impl Iterator<Item=Point> + 'a>
         where C: PixelColor
     {
         assert!(top_left.x < bottom_right.x);
@@ -28,8 +34,14 @@ impl<'a> CurvePoints<'a> {
 
         let it = self.points.iter()
             .map(move |p| Point{
-                x: p.x.scale_between_ranges(x_range,&Range{start: top_left.x, end: bottom_right.x}),
-                y: p.y.scale_between_ranges(y_range,&Range{start: bottom_right.y, end: top_left.y}),
+                x: p.x.scale_between_ranges(
+                    x_range,
+                    &Range{start: top_left.x, end: bottom_right.x}
+                ),
+                y: p.y.scale_between_ranges(
+                    y_range,
+                    &Range{start: bottom_right.y, end: top_left.y}
+                ),
             });
         DrawableCurve::new(it,color)
     }
