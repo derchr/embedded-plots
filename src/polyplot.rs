@@ -5,8 +5,6 @@ use embedded_graphics::prelude::Point;
 use embedded_graphics::pixelcolor::PixelColor;
 
 pub struct PolyPlot<'a, C>
-    where
-        C: PixelColor
 {
     curves: &'a [(Curve<'a>, C)],
     top_left: Point,

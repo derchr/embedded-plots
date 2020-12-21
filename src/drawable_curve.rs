@@ -6,8 +6,6 @@ use embedded_graphics::primitives::{Line, Primitive};
 use embedded_graphics::style::PrimitiveStyle;
 
 pub struct DrawableCurve<C, I>
-    where
-        I: Iterator<Item=Point>,
 {
     scaled_data: I,
     color: C,

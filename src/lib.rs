@@ -6,3 +6,4 @@ pub mod single_plot;
 
 mod drawable_curve;
 mod range_conv;
+mod axis;
