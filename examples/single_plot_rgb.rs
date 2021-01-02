@@ -26,7 +26,7 @@ fn main() -> Result<(), core::convert::Infallible> {
     ];
     let curve = Curve::from_data(data.as_slice());
 
-    let plot = SinglePlot::new(&curve, RgbColor::YELLOW, Point { x: 10, y: 10 }, Point { x: 470, y: 260 });
+    let plot = SinglePlot::new(&curve, RgbColor::YELLOW, Point { x: 50, y: 10 }, Point { x: 430, y: 250 });
 
     plot.draw(&mut display)?;
     let output_settings = OutputSettingsBuilder::new()

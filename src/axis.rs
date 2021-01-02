@@ -51,6 +51,10 @@ impl<'a, C, F> Axis<'a, C, F>
     pub fn new(title: &'a str, orientation: Placement, range: Range<i32>, scale: Scale, color: C, text_style: TextStyle<C,F>, tick_height: usize) -> Axis<'a, C, F> {
         Axis { title, placement: orientation, range, scale, color, text_style, tick_size: tick_height }
     }
+
+    pub fn size(&self) -> Point {
+        Point{x: 50, y: 50}
+    }
 }
 
 
