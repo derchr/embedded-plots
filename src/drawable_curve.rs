@@ -16,7 +16,7 @@ impl<C, I> DrawableCurve<C, I>
         C: PixelColor,
         I: Iterator<Item=Point>,
 {
-    pub fn new(data: I, color: C) -> DrawableCurve<C, I> {
+    pub(in crate) fn new(data: I, color: C) -> DrawableCurve<C, I> {
         DrawableCurve {
             scaled_data: data,
             color,

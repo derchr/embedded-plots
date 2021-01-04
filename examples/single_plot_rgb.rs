@@ -13,6 +13,7 @@ use embedded_graphics_simulator::{
 use embedded_plots::{
     single_plot::{SinglePlot},
     curve::{PlotPoint, Curve},
+    axis::Scale,
 };
 
 fn main() -> Result<(), core::convert::Infallible> {
@@ -20,13 +21,20 @@ fn main() -> Result<(), core::convert::Infallible> {
 
     let data = vec![
         PlotPoint { x: 0, y: 0 },
-        PlotPoint { x: 1, y: 1 },
-        PlotPoint { x: 2, y: 1 },
+        PlotPoint { x: 1, y: 2 },
+        PlotPoint { x: 2, y: 2 },
         PlotPoint { x: 3, y: 0 },
     ];
     let curve = Curve::from_data(data.as_slice());
 
-    let plot = SinglePlot::new(&curve, RgbColor::YELLOW, Point { x: 50, y: 10 }, Point { x: 430, y: 250 });
+    let plot = SinglePlot::new(
+        &curve,
+        RgbColor::YELLOW,
+        Point { x: 50, y: 10 },
+        Point { x: 430, y: 250 },
+        Scale::RangeFraction(3),
+        Scale::RangeFraction(2)
+    );
 
     plot.draw(&mut display)?;
     let output_settings = OutputSettingsBuilder::new()

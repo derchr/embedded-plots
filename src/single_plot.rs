@@ -12,6 +12,8 @@ pub struct SinglePlot<'a, C>
         C: PixelColor
 {
     curve: &'a Curve<'a>,
+    x_scale: Scale,
+    y_scale: Scale,
     color: C,
     top_left: Point,
     bottom_right: Point,
@@ -21,8 +23,8 @@ impl<'a, C> SinglePlot<'a, C>
     where
         C: PixelColor
 {
-    pub fn new(curve: &'a Curve<'a>, color: C, top_left: Point, bottom_right: Point) -> SinglePlot<'a, C> {
-        SinglePlot { curve, color, top_left, bottom_right}
+    pub fn new(curve: &'a Curve<'a>, color: C, top_left: Point, bottom_right: Point, x_scale: Scale, y_scale: Scale) -> SinglePlot<'a, C> {
+        SinglePlot { curve, color, top_left, bottom_right, x_scale, y_scale}
     }
 }
 
@@ -36,10 +38,12 @@ impl<'a, C> Drawable<C> for SinglePlot<'a, C>
             .text_color(self.color)
             .build();
 
-        Axis::new("X", Placement::X{x1: self.top_left.x, x2: self.bottom_right.x, y: self.bottom_right.y}, 0..100, Scale::Fixed(10), self.color, text_style, 2)
+        Axis::new("X",self.curve.x_range.clone(),self.x_scale)
+            .into_drawable_axis(Placement::X{x1: self.top_left.x, x2: self.bottom_right.x, y: self.bottom_right.y},self.color,text_style,2)
             .draw(display)?;
 
-        Axis::new("Y", Placement::Y{y1: self.top_left.y, y2: self.bottom_right.y, x: self.top_left.x}, 0..200, Scale::Fixed(10), self.color, text_style, 1)
+        Axis::new("Y",  self.curve.y_range.clone(), self.y_scale)
+            .into_drawable_axis(Placement::Y{y1: self.top_left.y, y2: self.bottom_right.y, x: self.top_left.x},self.color,text_style,2)
             .draw(display)?;
 
         self.curve.into_drawable_curve(
