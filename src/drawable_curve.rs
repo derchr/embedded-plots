@@ -6,8 +6,6 @@ use embedded_graphics::primitives::{Line, Primitive};
 use embedded_graphics::style::PrimitiveStyle;
 
 pub struct DrawableCurve<C, I>
-    where
-        I: Iterator<Item=Point>,
 {
     scaled_data: I,
     color: C,
@@ -18,7 +16,7 @@ impl<C, I> DrawableCurve<C, I>
         C: PixelColor,
         I: Iterator<Item=Point>,
 {
-    pub fn new(data: I, color: C) -> DrawableCurve<C, I> {
+    pub(in crate) fn new(data: I, color: C) -> DrawableCurve<C, I> {
         DrawableCurve {
             scaled_data: data,
             color,

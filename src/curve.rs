@@ -13,8 +13,8 @@ pub struct PlotPoint {
 
 pub struct Curve<'a> {
     points: &'a [PlotPoint],
-    x_range: Range<i32>,
-    y_range: Range<i32>,
+    pub x_range: Range<i32>,
+    pub y_range: Range<i32>,
 }
 
 impl<'a> Curve<'a> {
