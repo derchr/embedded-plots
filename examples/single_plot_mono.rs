@@ -24,11 +24,12 @@ fn main() -> Result<(), core::convert::Infallible> {
 
     let plot = SinglePlot::new(
         &curve,
-        BinaryColor::On,
-        Point { x: 9, y: 3 },
-        Point { x: 120, y: 45 },
         Scale::RangeFraction(3),
-        Scale::RangeFraction(2)
+        Scale::RangeFraction(2),
+    ).into_drawable(
+        BinaryColor::On,
+        Point { x: 18, y: 2 },
+        Point { x: 120, y: 30 },
     );
 
     plot.draw(&mut display)?;

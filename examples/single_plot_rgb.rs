@@ -7,7 +7,6 @@ use embedded_graphics_simulator::{
     SimulatorDisplay,
     Window,
     OutputSettingsBuilder,
-
 };
 
 use embedded_plots::{
@@ -29,11 +28,13 @@ fn main() -> Result<(), core::convert::Infallible> {
 
     let plot = SinglePlot::new(
         &curve,
+        Scale::RangeFraction(3),
+        Scale::RangeFraction(2),
+    )
+    .into_drawable(
         RgbColor::YELLOW,
         Point { x: 50, y: 10 },
-        Point { x: 430, y: 250 },
-        Scale::RangeFraction(3),
-        Scale::RangeFraction(2)
+        Point { x: 430, y: 250 }
     );
 
     plot.draw(&mut display)?;
