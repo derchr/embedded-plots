@@ -3,8 +3,7 @@ use core::ops::{Range};
 use crate::range_conv::Scalable;
 use crate::drawable_curve::DrawableCurve;
 use embedded_graphics::prelude::*;
-use itertools::MinMaxResult::MinMax;
-use itertools::{Itertools, MinMaxResult};
+use itertools::{Itertools, MinMaxResult::MinMax, MinMaxResult};
 
 pub struct PlotPoint {
     pub x: i32,
