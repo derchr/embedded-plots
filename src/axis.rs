@@ -34,12 +34,12 @@ impl<'a> Axis<'a>
         Axis{title, range, scale}
     }
 
-    pub fn into_drawable_axis<C, F>(self, placement: Placement, plot_color: C, text_style: TextStyle<C, F>, tick_height: usize) -> DrawableAxis<'a, C, F>
+    pub fn into_drawable_axis<C, F>(self, placement: Placement, plot_color: C, text_style: TextStyle<C, F>, tick_height: usize, thickness: usize) -> DrawableAxis<'a, C, F>
         where
             C: PixelColor,
             F: Font,
             TextStyle<C, F>: Clone,
     {
-        DrawableAxis::new(self.title,placement,self.range,self.scale,plot_color,text_style,tick_height)
+        DrawableAxis::new(self.title,placement,self.range,self.scale,plot_color,text_style,tick_height,thickness)
     }
 }

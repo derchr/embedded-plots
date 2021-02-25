@@ -22,6 +22,7 @@ pub struct DrawableAxis<'a, C, F>
     color: C,
     text_style: TextStyle<C, F>,
     tick_size: usize,
+    thickness: usize,
 }
 
 impl<'a, C, F> DrawableAxis<'a, C, F>
@@ -30,8 +31,8 @@ impl<'a, C, F> DrawableAxis<'a, C, F>
         F: Font,
         TextStyle<C, F>: Clone,
 {
-    pub(in crate) fn new(title: &'a str, placement: Placement, range: Range<i32>, scale: Scale, color: C, text_style: TextStyle<C, F>, tick_height: usize) -> DrawableAxis<'a, C, F> {
-        DrawableAxis { title, placement, range, scale, color, text_style, tick_size: tick_height }
+    pub(in crate) fn new(title: &'a str, placement: Placement, range: Range<i32>, scale: Scale, color: C, text_style: TextStyle<C, F>, tick_height: usize, thickness: usize) -> DrawableAxis<'a, C, F> {
+        DrawableAxis { title, placement, range, scale, color, text_style, tick_size: tick_height, thickness }
     }
 
     pub fn size(&self) -> Point {
@@ -59,7 +60,7 @@ impl<'a, C, F> Drawable<C> for DrawableAxis<'a, C, F>
         match self.placement {
             Placement::X { x1, x2, y } => {
                 Line { start: Point { x: x1, y }, end: Point { x: x2, y } }
-                    .into_styled(PrimitiveStyle::with_stroke(self.color, 1))
+                    .into_styled(PrimitiveStyle::with_stroke(self.color, self.thickness as u32))
                     .draw(display)?;
                 let title = Text::new(self.title, Point { x: x1, y: y + 10 })
                     .into_styled(self.text_style);
@@ -69,7 +70,7 @@ impl<'a, C, F> Drawable<C> for DrawableAxis<'a, C, F>
                 for mark in scale_marks {
                     let x = mark.scale_between_ranges(&self.range, &(x1..x2));
                     Line { start: Point { x, y: y - self.tick_size as i32 }, end: Point { x, y: y + self.tick_size as i32 } }
-                        .into_styled(PrimitiveStyle::with_stroke(self.color, 1))
+                        .into_styled(PrimitiveStyle::with_stroke(self.color, self.thickness as u32))
                         .draw(display)?;
                     let mut buf: String::<U8> = String::new();
                     write!(buf, "{}", mark).unwrap();
@@ -78,14 +79,14 @@ impl<'a, C, F> Drawable<C> for DrawableAxis<'a, C, F>
             }
             Placement::Y { y1, y2, x } => {
                 Line { start: Point { x, y: y1 }, end: Point { x, y: y2 } }
-                    .into_styled(PrimitiveStyle::with_stroke(self.color, 1))
+                    .into_styled(PrimitiveStyle::with_stroke(self.color, self.thickness as u32))
                     .draw(display)?;
 
                 let mut max_tick_text_width = 0;
                 for mark in scale_marks {
                     let y = mark.scale_between_ranges(&self.range, &(y2..y1));
                     Line { start: Point { x: x - self.tick_size as i32, y }, end: Point { x: x + self.tick_size as i32, y } }
-                        .into_styled(PrimitiveStyle::with_stroke(self.color, 1))
+                        .into_styled(PrimitiveStyle::with_stroke(self.color, self.thickness as u32))
                         .draw(display)?;
                     let mut buf: String::<U8> = String::new();
                     write!(buf, "{}", mark).unwrap();

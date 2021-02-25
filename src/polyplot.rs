@@ -30,6 +30,7 @@ impl<'a, C> Drawable<C> for PolyPlot<'a, C>
                 &self.top_left,
                 &self.bottom_right,
                 *color,
+                2
             ).draw(display)?;
         }
         Ok(())

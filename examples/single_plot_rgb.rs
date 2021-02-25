@@ -29,13 +29,10 @@ fn main() -> Result<(), core::convert::Infallible> {
     let plot = SinglePlot::new(
         &curve,
         Scale::RangeFraction(3),
-        Scale::RangeFraction(2),
-    )
-    .into_drawable(
-        RgbColor::YELLOW,
+        Scale::RangeFraction(2)).into_drawable(
         Point { x: 50, y: 10 },
-        Point { x: 430, y: 250 }
-    );
+        Point { x: 430, y: 250 },
+    ).set_color(RgbColor::YELLOW).set_text_color(RgbColor::WHITE);
 
     plot.draw(&mut display)?;
     let output_settings = OutputSettingsBuilder::new()

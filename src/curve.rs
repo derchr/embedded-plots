@@ -44,6 +44,7 @@ impl<'a> Curve<'a> {
                                   top_left: &'a Point,
                                   bottom_right: &'a Point,
                                   color: C,
+                                  thickness: usize,
     ) -> DrawableCurve<C, impl Iterator<Item=Point> + '_>
         where C: PixelColor
     {
@@ -63,7 +64,7 @@ impl<'a> Curve<'a> {
                     &Range { start: bottom_right.y, end: top_left.y },
                 ),
             });
-        DrawableCurve::new(it, color)
+        DrawableCurve::new(it, color,thickness)
     }
 }
 

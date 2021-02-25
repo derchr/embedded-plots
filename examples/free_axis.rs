@@ -31,7 +31,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::X{x1: 40, x2: 230, y: 10},
             RgbColor::WHITE,
             text_style_white,
-            2
+            2,
+            2,
         )
         .draw(&mut display)?;
 
@@ -40,7 +41,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::X{x1: 240, x2: 470, y: 10},
             RgbColor::YELLOW,
             text_style_yellow_compact,
-            1
+            1,
+            2,
         )
         .draw(&mut display)?;
 
@@ -49,7 +51,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::X{x1: 50, x2: 220, y: 30},
             RgbColor::BLUE,
             text_style_white,
-            3
+            3,
+            1,
         )
         .draw(&mut display)?;
 
@@ -58,7 +61,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::X{x1: 250, x2: 460, y: 40},
             RgbColor::RED,
             text_style_yellow_compact,
-            7
+            7,
+            1,
         )
         .draw(&mut display)?;
 
@@ -67,7 +71,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::Y{y1: 70, y2: 230, x: 160},
             RgbColor::WHITE,
             text_style_white,
-            2
+            2,
+            1,
         )
         .draw(&mut display)?;
 
@@ -76,7 +81,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::Y{y1: 70, y2: 210, x: 260},
             RgbColor::YELLOW,
             text_style_yellow_compact,
-            1
+            1,
+            1,
         )
         .draw(&mut display)?;
 
@@ -85,7 +91,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::Y{y1: 60, y2: 180, x: 370},
             RgbColor::BLUE,
             text_style_white,
-            3
+            3,
+            1,
         )
         .draw(&mut display)?;
 
@@ -94,7 +101,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::Y{y1: 90, y2: 220, x: 470},
             RgbColor::RED,
             text_style_yellow_compact,
-            7
+            7,
+            1,
         )
         .draw(&mut display)?;
 
@@ -103,7 +111,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::X{x1: 30, x2: 470, y: 250},
             RgbColor::YELLOW,
             text_style_white,
-            2
+            2,
+            1,
         )
         .draw(&mut display)?;
 
@@ -112,7 +121,8 @@ fn main() -> Result<(), core::convert::Infallible> {
             Placement::Y{y1: 10, y2: 250, x: 30},
             RgbColor::WHITE,
             text_style_white,
-            2
+            2,
+            1,
         )
         .draw(&mut display)?;
 
