@@ -111,9 +111,9 @@ impl<'a, C> Drawable<C> for DrawableSinglePlot<'a, C>
         self.plot.curve.into_drawable_curve(
             &self.top_left,
             &self.bottom_right,
-            color,
-            thickness,
-        ).draw(display)?;
+        ).set_color(color)
+            .set_thickness(thickness)
+            .draw(display)?;
         Ok(())
     }
 }

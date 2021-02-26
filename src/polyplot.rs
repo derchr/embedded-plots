@@ -22,16 +22,16 @@ impl<'a, C> PolyPlot<'a, C>
 
 impl<'a, C> Drawable<C> for PolyPlot<'a, C>
     where
-        C: PixelColor
+        C: PixelColor + Default,
 {
     fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), D::Error> {
         for (curve, color) in self.curves {
             curve.into_drawable_curve(
                 &self.top_left,
                 &self.bottom_right,
-                *color,
-                2
-            ).draw(display)?;
+            ).set_color(*color)
+                .set_thickness(2)
+                .draw(display)?;
         }
         Ok(())
     }

@@ -1,9 +1,15 @@
 use core::ops::{Range};
 
 use crate::range_conv::Scalable;
-use crate::drawable_curve::DrawableCurve;
-use embedded_graphics::prelude::*;
 use itertools::{Itertools, MinMaxResult::MinMax, MinMaxResult};
+
+use embedded_graphics::drawable::{Drawable};
+use embedded_graphics::DrawTarget;
+use embedded_graphics::geometry::Point;
+use embedded_graphics::pixelcolor::{PixelColor};
+use embedded_graphics::primitives::{Line, Primitive};
+use embedded_graphics::style::PrimitiveStyle;
+
 
 pub struct PlotPoint {
     pub x: i32,
@@ -43,8 +49,6 @@ impl<'a> Curve<'a> {
     pub fn into_drawable_curve<C>(&self,
                                   top_left: &'a Point,
                                   bottom_right: &'a Point,
-                                  color: C,
-                                  thickness: usize,
     ) -> DrawableCurve<C, impl Iterator<Item=Point> + '_>
         where C: PixelColor
     {
@@ -64,10 +68,61 @@ impl<'a> Curve<'a> {
                     &Range { start: bottom_right.y, end: top_left.y },
                 ),
             });
-        DrawableCurve::new(it, color,thickness)
+        DrawableCurve {
+            scaled_data: it,
+            color: None,
+            thickness: None,
+        }
     }
 }
 
+pub struct DrawableCurve<C, I>
+{
+    scaled_data: I,
+    color: Option<C>,
+    thickness: Option<usize>,
+}
+
+impl<C, I> DrawableCurve<C, I>
+    where
+        C: PixelColor,
+        I: Iterator<Item=Point>,
+{
+    pub fn set_color(mut self, color: C) -> DrawableCurve<C, I> {
+        self.color = Some(color);
+        self
+    }
+    pub fn set_thickness(mut self, thickness: usize) -> DrawableCurve<C,I> {
+        self.thickness = Some(thickness);
+        self
+    }
+}
+
+impl<C, I> Drawable<C> for DrawableCurve<C, I>
+    where C: PixelColor + Default,
+          I: Iterator<Item=Point>,
+{
+    fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), D::Error> {
+        let color = match self.color {
+            None => C::default(),
+            Some(c) => c,
+        };
+        let thickness = match self.thickness {
+            None => 2,
+            Some(t) => t,
+        };
+        let style = PrimitiveStyle::with_stroke(color, thickness as u32);
+        let mut iter = self.scaled_data.into_iter();
+        let mut prev = iter.next().unwrap();
+        for point in iter {
+            Line::new(prev, point)
+                .into_styled(style)
+                .draw(display)?;
+            prev = point;
+        }
+        Ok(())
+    }
+}
 
 #[cfg(test)]
 mod tests {

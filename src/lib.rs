@@ -5,6 +5,5 @@ pub mod axis;
 pub mod polyplot;
 pub mod single_plot;
 
-mod drawable_curve;
 mod range_conv;
 mod drawable_axis;
