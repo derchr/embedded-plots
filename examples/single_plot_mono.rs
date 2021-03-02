@@ -27,10 +27,9 @@ fn main() -> Result<(), core::convert::Infallible> {
         Scale::RangeFraction(3),
         Scale::RangeFraction(2),
     ).into_drawable(
-        BinaryColor::On,
         Point { x: 18, y: 2 },
         Point { x: 120, y: 30 },
-    );
+    ).set_color(BinaryColor::On);
 
     plot.draw(&mut display)?;
     let output_settings = OutputSettingsBuilder::new()
