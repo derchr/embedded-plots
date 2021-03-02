@@ -73,39 +73,34 @@ impl<'a, C> Drawable<C> for DrawableSinglePlot<'a, C>
         C: PixelColor + Default,
 {
     fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), D::Error> {
-        let color = match self.color {
-            None => C::default(),
-            Some(c) => c,
-        };
-        let text_color = match self.text_color {
-            None => color,
-            Some(c) => c,
-        };
-        let axis_color = match self.axis_color {
-            None => color,
-            Some(c) => c,
-        };
-
-        let thickness = match self.thickness {
-            None => 2,
-            Some(t) => t,
-        };
-
-        let axis_thickness = match self.axis_thickness {
-            None => thickness,
-            Some(t) => t,
-        };
+        let color = self.color.unwrap_or_default();
+        let text_color = self.text_color.unwrap_or(color);
+        let axis_color = self.axis_color.unwrap_or(color);
+        let thickness = self.thickness.unwrap_or(2);
+        let axis_thickness = self.axis_thickness.unwrap_or(thickness);
 
         let text_style = TextStyleBuilder::new(Font6x8)
             .text_color(text_color)
             .build();
 
-        Axis::new("X", self.plot.curve.x_range.clone(), self.plot.x_scale)
-            .into_drawable_axis(Placement::X { x1: self.top_left.x, x2: self.bottom_right.x, y: self.bottom_right.y }, axis_color, text_style, 2, axis_thickness)
+        Axis::new( self.plot.curve.x_range.clone())
+            .set_title("X")
+            .set_scale(self.plot.x_scale)
+            .into_drawable_axis(Placement::X { x1: self.top_left.x, x2: self.bottom_right.x, y: self.bottom_right.y })
+            .set_color(axis_color)
+            .set_text_style(text_style)
+            .set_tick_size(2)
+            .set_thickness(axis_thickness)
             .draw(display)?;
 
-        Axis::new("Y", self.plot.curve.y_range.clone(), self.plot.y_scale)
-            .into_drawable_axis(Placement::Y { y1: self.top_left.y, y2: self.bottom_right.y, x: self.top_left.x }, axis_color, text_style, 2,axis_thickness)
+        Axis::new(self.plot.curve.y_range.clone())
+            .set_title("Y")
+            .set_scale(self.plot.y_scale)
+            .into_drawable_axis(Placement::Y { y1: self.top_left.y, y2: self.bottom_right.y, x: self.top_left.x })
+            .set_color(axis_color)
+            .set_text_style(text_style)
+            .set_tick_size(2)
+            .set_thickness(axis_thickness)
             .draw(display)?;
 
         self.plot.curve.into_drawable_curve(
