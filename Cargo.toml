@@ -9,7 +9,7 @@ homepage = "https://gitlab.com/mchodzikiewicz/embedded-plots"
 repository = "https://gitlab.com/mchodzikiewicz/embedded-plots"
 readme = "README.md"
 keywords = ["embedded", "plot", "graphics"]
-categories = ["embedded","visualization"]
+categories = ["embedded","visualization","no-std","graphics"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
