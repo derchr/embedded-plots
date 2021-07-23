@@ -3,12 +3,18 @@ use core::ops::{Range};
 use crate::range_conv::Scalable;
 use itertools::{Itertools, MinMaxResult::MinMax, MinMaxResult};
 
-use embedded_graphics::drawable::{Drawable};
-use embedded_graphics::DrawTarget;
-use embedded_graphics::geometry::Point;
-use embedded_graphics::pixelcolor::{PixelColor};
-use embedded_graphics::primitives::{Line, Primitive};
-use embedded_graphics::style::PrimitiveStyle;
+use embedded_graphics_core::{
+    Drawable,
+    draw_target::DrawTarget,
+    geometry::Point,
+};
+
+use embedded_graphics::{
+    primitives::Line,
+    primitives::PrimitiveStyle,
+};
+use embedded_graphics::primitives::Primitive;
+use embedded_graphics_core::pixelcolor::PixelColor;
 
 /// representation of the single point on the curve
 pub struct PlotPoint {
@@ -108,22 +114,26 @@ impl<C, I> DrawableCurve<C, I>
     }
 }
 
-impl<C, I> Drawable<C> for DrawableCurve<C, I>
-    where C: PixelColor + Default,
-          I: Iterator<Item=Point>,
+impl<C, I> Drawable for DrawableCurve<C, I>
+    where
+        C: PixelColor + Default,
+        I: Iterator<Item=Point> + Clone,
 {
+    type Color = C;
+    type Output = ();
+
     /// most important function - draw the curve on the display
-    fn draw<D: DrawTarget<C>>(self, display: &mut D) -> Result<(), D::Error> {
-        let color = match self.color {
+    fn draw<D: DrawTarget<Color  = C>>(&self, display: &mut D) -> Result<(), <D as DrawTarget>::Error> {
+        let color = match &self.color {
             None => C::default(),
-            Some(c) => c,
+            Some(c) => c.clone(),
         };
-        let thickness = match self.thickness {
+        let thickness = match &self.thickness {
             None => 2,
-            Some(t) => t,
+            Some(t) => t.clone(),
         };
         let style = PrimitiveStyle::with_stroke(color, thickness as u32);
-        self.scaled_data
+        self.scaled_data.clone()
             .tuple_windows()
             .try_for_each(|(prev, point)| -> Result<(), D::Error> {
                 Line::new(prev, point)
