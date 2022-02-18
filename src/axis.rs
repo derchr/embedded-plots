@@ -31,7 +31,7 @@ pub enum Placement {
 }
 
 /// Used to describe how densely ticks should be drawn
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub enum Scale {
     /// Fixed scale means that ticks will be drawn between each increment of absolute distance provided.
     /// for example, on range 0..30 and Fixed(10), ticks will be drawn for 0, 10 and 20
@@ -87,7 +87,7 @@ impl<'a> Axis<'a>
             axis: self,
             placement,
             color: None,
-            // text_style: None,
+            text_style: None,
             tick_size: None,
             thickness: None,
         }
@@ -103,6 +103,7 @@ pub struct DrawableAxis<'a, C>
     axis: Axis<'a>,
     placement: Placement,
     color: Option<C>,
+    text_style: Option<MonoTextStyle<'a, C>>,
     tick_size: Option<usize>,
     thickness: Option<usize>,
 }
@@ -116,10 +117,11 @@ impl<'a, C> DrawableAxis<'a, C>
         self.color = Some(val);
         self
     }
-    // pub fn set_text_style(mut self, val: TextStyle) -> DrawableAxis<'a, C> {
-    //     self.text_style = Some(val);
-    //     self
-    // }
+
+    pub fn set_text_style(mut self, val: MonoTextStyle<'a, C>) -> DrawableAxis<'a, C> {
+        self.text_style = Some(val);
+        self
+    }
 
     /// set how wide tick should be drawn on the axis
     pub fn set_tick_size(mut self, val: usize) -> DrawableAxis<'a, C> {
